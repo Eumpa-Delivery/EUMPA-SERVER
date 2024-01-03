@@ -79,7 +79,7 @@ jobs:
 #          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo fuser -k 8080/tcp"
 #          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo nohup java -jar /home/${{ secrets.SSH_USER }}/server/*.jar &"
 
-      - name: scp ssh pipelines
+      - name: ssh scp ssh pipelines
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
             host: ${{ secrets.SERVER_HOST }}
