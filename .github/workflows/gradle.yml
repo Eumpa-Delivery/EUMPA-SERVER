@@ -86,7 +86,7 @@ jobs:
             user: ${{ secrets.SSH_USER }}
             key: ${{ secrets.SSH_PRIVATE_KEY }}
             first_ssh: |
-              cd /home/${{ secrets.SSH_USER }}/server/*-SNAPSHOT.jar && rm -f *-SNAPSHOT.jar && echo 'delete success'
+              cd /home/${{ secrets.SSH_USER }}/server/ && rm -f *-SNAPSHOT.jar && echo 'delete success'
             scp: |
               ./deploy/*-SNAPSHOT.jar => /home/${{ secrets.SSH_USER }}/server/
             last_ssh: |
