@@ -80,7 +80,7 @@ jobs:
 #          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo nohup java -jar /home/${{ secrets.SSH_USER }}/server/*.jar &"
 
       - name: ssh connection
-        uses: cross-the-world/ssh-pipelines@latest
+        uses: cross-the-world/ssh-pipeline@latest
         with:
             host: ${{ secrets.SERVER_HOST }}
             user: ${{ secrets.SSH_USER }}
