@@ -66,27 +66,27 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: SCP transfer
-        run: scp ./deploy/*-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SSH_USER }}/server/
-
-      - name: Execute remote commands
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo fuser -k 8080/tcp"
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo nohup java -jar /home/${{ secrets.SSH_USER }}/server/*.jar &"
-
-#      - name: ssh connection
-#        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+#      - name: Setup SSH
+#        uses: webfactory/ssh-agent@v0.5.4
 #        with:
-#            host: ${{ secrets.SERVER_HOST }}
-#            user: ${{ secrets.SSH_USER }}
-#            key: ${{ secrets.SSH_PRIVATE_KEY }}
-#            scp: |
-#              ./deploy/*-SNAPSHOT.jar => /home/${{ secrets.SSH_USER }}/server/
-#            last_ssh: |
-#              cd /home/${{ secrets.SSH_USER }}/server/
-#              sudo -S sh -c "nohup java -jar *-SNAPSHOT.jar &" <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - name: SCP transfer
+#        run: scp ./deploy/*-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SSH_USER }}/server/
+#
+#      - name: Execute remote commands
+#        run: |
+#          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo fuser -k 8080/tcp"
+#          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo nohup java -jar /home/${{ secrets.SSH_USER }}/server/*.jar &"
+
+      - name: ssh connection
+        uses: cross-the-world/ssh-pipelines@latest
+        with:
+            host: ${{ secrets.SERVER_HOST }}
+            user: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            scp: |
+              ./deploy/*-SNAPSHOT.jar => /home/${{ secrets.SSH_USER }}/server/
+            script: |
+              cd /home/${{ secrets.SSH_USER }}/server/
+              sudo -S sh -c "nohup java -jar *-SNAPSHOT.jar &" <<< "${{ secrets.SSH_PRIVATE_KEY }}"
