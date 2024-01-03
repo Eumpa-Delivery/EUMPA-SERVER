@@ -79,14 +79,14 @@ jobs:
 #          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo fuser -k 8080/tcp"
 #          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} "sudo nohup java -jar /home/${{ secrets.SSH_USER }}/server/*.jar &"
 
-      - name: ssh connection
-        uses: cross-the-world/ssh-pipeline@master
+      - name: scp ssh pipelines
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
             host: ${{ secrets.SERVER_HOST }}
             user: ${{ secrets.SSH_USER }}
             key: ${{ secrets.SSH_PRIVATE_KEY }}
             scp: |
               ./deploy/*-SNAPSHOT.jar => /home/${{ secrets.SSH_USER }}/server/
-            script: |
+            last_ssh: |
               cd /home/${{ secrets.SSH_USER }}/server/
               sudo -S sh -c "nohup java -jar *-SNAPSHOT.jar &" <<< "${{ secrets.SSH_PRIVATE_KEY }}"
