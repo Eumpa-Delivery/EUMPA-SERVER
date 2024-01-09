@@ -18,9 +18,9 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public void register(JoinReqDTO joinRequest) {
+    public void register(JoinReqDTO.Request joinRequest) {
         // 전화번호로 기존 회원을 찾음
-        Optional<Member> existingMember = memberRepository.findByPhoneNumber(joinRequest.phoneNumber());
+        Optional<Member> existingMember = memberRepository.findByPhoneNumber(joinRequest.getEmail());
 
         if (existingMember.isPresent()) {
             // 이미 회원이 존재하는 경우에 대한 처리
@@ -28,11 +28,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         // 기존 회원이 없으면 새 회원으로 등록
-        Member member = Member.builder()
-                .userId(joinRequest.userId())
-                .name(joinRequest.name())
-                .phoneNumber(joinRequest.phoneNumber())
-                .build();
+        Member member = Member.of(joinRequest);
 
         memberRepository.save(member);
     }
