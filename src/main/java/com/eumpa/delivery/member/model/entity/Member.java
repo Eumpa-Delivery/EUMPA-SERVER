@@ -51,11 +51,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    public static Member of(JoinReqDTO.Request JoinReqDTO) {
+    public static Member of(JoinReqDTO.Request joinReqDTO) {
         Member member = Member.builder()
-                .email(JoinReqDTO.getEmail())
-                .name(JoinReqDTO.getName())
-                .password(JoinReqDTO.getPassword())
+                .email(joinReqDTO.getEmail())
+                .name(joinReqDTO.getName())
+                .nickName(joinReqDTO.getNickName())
+                .password(joinReqDTO.getPassword())
                 .status(MemberStatus.SUSPENDED)
                 .regDt(LocalDateTime.now())
                 .emailAuthStatus(EmailAuthStatus.PENDING)

@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void register(JoinReqDTO.Request joinRequest) {
         // 전화번호로 기존 회원을 찾음
-        Optional<Member> existingMember = memberRepository.findByPhoneNumber(joinRequest.getEmail());
+        Optional<Member> existingMember = memberRepository.findByEmail(joinRequest.getEmail());
 
         if (existingMember.isPresent()) {
             // 이미 회원이 존재하는 경우에 대한 처리
