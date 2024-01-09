@@ -26,7 +26,7 @@ public class MemberController {
      */
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
-    public void join(@RequestBody JoinReqDTO joinRequest) throws Exception {
+    public void join(@RequestBody JoinReqDTO.Request joinRequest) throws Exception {
         memberService.register(joinRequest);
     }
 }

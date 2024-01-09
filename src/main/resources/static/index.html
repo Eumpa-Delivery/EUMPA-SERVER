@@ -7,12 +7,12 @@
 </head>
 <body>
 <header>
-    <h1>음식 배달 서비스</h1>
+    <h1>음식 파트너 EUMPA</h1>
 </header>
 <nav>
     <ul>
         <li><a href="#" id="joinLink">회원가입</a></li>
-        <li><a href="@{/member/login}">로그인</a></li>
+        <li><a href="#" id="loginLink">로그인</a></li>
         <li><a href="@{/member/logout}">로그아웃</a></li>
         <li><a href="@{/member/my}">마이페이지</a></li>
         <li><a href="@{/posting/insert}">게시글 작성</a></li>
@@ -22,29 +22,90 @@
 
 <div id="joinForm" style="display: none;">
     <form id="signupForm">
-        <label for="userId">아이디:</label>
-        <input type="text" id="userId" name="userId"><br><br>
         <label for="name">이름:</label>
         <input type="text" id="name" name="name"><br><br>
-        <label for="phoneNumber">폰번호:</label>
-        <input type="text" id="phoneNumber" name="phonNumber"><br><br>
+        <label for="nickName">닉네임:</label>
+        <input type="text" id="nickName" name="nickName"><br><br>
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address"><br><br>
         <input type="submit" value="가입하기">
+    </form>
+</div>
+
+<div id="loginForm" style="display: none;">
+    <form id="signinForm">
+        <label for="loginId">아이디:</label>
+        <input type="text" id="loginId" name="loginId"><br><br>
+        <label for="loginPassword">비밀번호:</label>
+        <input type="password" id="loginPassword" name="loginPassword"><br><br>
+        <input type="submit" value="로그인">
     </form>
 </div>
 
 <script>
     document.getElementById("joinLink").addEventListener("click", function(event) {
         event.preventDefault();
-        document.getElementById("joinForm").style.display = "block";
+        const joinForm = document.getElementById("joinForm");
+
+        if (joinForm.style.display === "block") {
+            joinForm.style.display = "none";
+        } else {
+            joinForm.style.display = "block";
+        }
     });
+
+    document.getElementById("loginLink").addEventListener("click", function(event) {
+        event.preventDefault();
+        const loginForm = document.getElementById("loginForm");
+
+        if (loginForm.style.display === "block") {
+            loginForm.style.display = "none";
+        } else {
+            loginForm.style.display = "block";
+        }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formData = {
+        loginId: document.getElementById("loginId").value,
+        password: document.getElementById("loginPassword").value
+    };
+
+    fetch('/member/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('로그인에 실패했습니다.');
+        }
+        alert('로그인이 완료되었습니다!');
+        document.getElementById("loginForm").style.display = "none";
+    })
+    .catch(error => {
+        console.error('로그인 중 문제가 발생했습니다:', error);
+        alert('로그인에 실패했습니다.');
+    });
+});
 
     document.getElementById("signupForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
         const formData = {
-            userId: document.getElementById("userId").value,
             name: document.getElementById("name").value,
-            phoneNumber: document.getElementById("phoneNumber").value
+            nickName: document.getElementById("nickName").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            address: document.getElementById("address").value
         };
 
         fetch('/member/join', {
